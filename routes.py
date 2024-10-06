@@ -50,7 +50,10 @@ def login():
 @app.route("/restaurant", methods=["GET", "POST"])
 @login_required
 def restaurant():
-    """Display restaurant records"""
+    """
+    Display restaurant records.
+    - Option to delete.
+    """
 
     return "restaurant"
 
@@ -78,7 +81,10 @@ def add_rest():
 @app.route("/meal", methods=["GET", "POST"])
 @login_required
 def meal():
-    """Display meal record"""
+    """
+    Display meal record.
+    - Option to delete.
+    """
 
     return "meal"
 
