@@ -1,10 +1,10 @@
 
-from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
-from flask_session import Session
 
+from flask import Flask, redirect, render_template, request
 from datetime import datetime
-from werkzeug.security import check_password_hash, generate_password_hash
+
+# WHAT IS BEST FOR HASHING?
+# from werkzeug.security import check_password_hash, generate_password_hash
 
 
 # Prevents caching to allow for up to date data while in development
@@ -37,6 +37,17 @@ def register():
 
 # LOG IN
 @app.route("/login", methods=["GET", "POST"])
+def login():
+    """
+    Log in an existing user. 
+    - Ensure username exists and password is correct.
+    """
+
+    return "log in"
+
+
+# LOG OUT
+@app.route("/logout", methods=["GET", "POST"])
 def login():
     """
     Log in an existing user. 
@@ -124,6 +135,15 @@ def search():
     return "search"
 
 
+# LIST OF RESTAURANTS TAGGED FAVORITES
+@app.route("/favorites", methods=["GET", "POST"])
+@login_required
+def favorites():
+    """Show list of restaurants with the favorites tag"""
+
+    return "favorites"
+
+
 # USER PROFILE
 @app.route("/user", methods=["GET", "POST"])
 @login_required
@@ -134,6 +154,14 @@ def user():
     """
 
     return "user"
+
+
+# ABOUT PAGE
+@app.route("/about", methods=["GET", "POST"])
+def about():
+    """Information about the project. Like to repo?"""
+
+    return "about"
 
 # HOME PAGE
 @app.route("/")
