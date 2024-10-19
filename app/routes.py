@@ -4,8 +4,7 @@ from datetime import datetime
 
 # Third-party imports
 from flask import render_template, request, redirect, flash
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from flask_login import login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # Local app imports

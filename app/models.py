@@ -1,6 +1,7 @@
 
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 
 from app import db
 
@@ -16,7 +17,7 @@ class People(db.Model):
     meals = relationship('Meal', back_populates='person')
 
 # User Table
-class User(db.Model):
+class User(db.Model, UserMixin):  # UserMixin allows Flask-Login methods to manage sessions
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, nullable=False)
