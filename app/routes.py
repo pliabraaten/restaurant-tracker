@@ -1,14 +1,20 @@
 
+# Standard library import
+from datetime import datetime  
 
-from flask import Flask, redirect, render_template, request
-from datetime import datetime
+# Third-party imports
+from flask import render_template, request, redirect, flash
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from werkzeug.security import check_password_hash, generate_password_hash
 
-# WHAT IS BEST FOR HASHING?
-# from werkzeug.security import check_password_hash, generate_password_hash
+# Local app imports
+from app import app, db # Import the flask app instance and db from __init__.py
+from app.models import People, User, Restaurant, Meal
 
 
 # Prevents caching to allow for up to date data while in development
-# MIGHT REMOVE AFTER DEVELOPMENT UNLESS NEEDED FOR REAL-TIME DATA OR USER SPECIFIC PAGES
+# TODO: MIGHT REMOVE AFTER DEVELOPMENT UNLESS NEEDED FOR REAL-TIME DATA OR USER SPECIFIC PAGES
 @app.after_request # Run after each request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -28,11 +34,21 @@ def register():
     - Requires password confirmation.
     - Hashes the password before saving.
 
-    - On GET: 
+    - On GET: render the register html
     - On POST: 
     """
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # TODO: CHECK IF USERNAME IS UNIQUE
+        # TODO: VERIFY PASSWORD CONFIRMATION MATCHES
+        # IFS
+            # Hash the password before adding to the db
+            # run flash message for success
 
-    return "register"
+
+    return render_template('register.html')
 
 
 # LOG IN
@@ -48,7 +64,7 @@ def login():
 
 # LOG OUT
 @app.route("/logout", methods=["GET", "POST"])
-def login():
+def logout():
     """
     Log in an existing user. 
     - Ensure username exists and password is correct.
