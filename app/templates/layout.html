@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 
-<!-- # TODO: SET UP FLASH MESSAGES  -->
-
 <html lang="en">
 
     <head>
@@ -24,8 +22,18 @@
     </head>
 
     <!-- Flash Message Setup -->
-     {% with messages = get_flashed_messages()  %}
-     
+     <!-- TODO: ADD CATEGORIES FOR DIFFERENT TYPES OF MESSAGES -->
+     <!-- https://flask.palletsprojects.com/en/1.1.x/patterns/flashing/ -->
+     <!-- USE WITH BOOTSTRAP'S ALERTS https://getbootstrap.com/docs/5.3/components/alerts/#examples -->
+     {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
     <body>
 
