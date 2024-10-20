@@ -78,14 +78,14 @@ def register():
         # Flash message for success in registering
         flash("Success! You can now log in!", "success")
 
-        # Log user in
+        # Log user in using flask_login feature
         login_user(new_user)
 
-        return render_template(url_for('index'))
+        return redirect(url_for("index"))
 
     # Method == GET
     else: 
-        return render_template('register.html')
+        return render_template("register.html")
 
 
 # LOG IN
@@ -95,8 +95,42 @@ def login():
     Log in an existing user. 
     - Ensure username exists and password is correct.
     """
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-    return render_template("login.html")
+        # Ensure username was entered
+        if not username:
+            flash("Please enter username.", "error")
+            return render_template("login.html")
+        
+        # Ensure password was entered
+        if not password:
+            flash("Please enter password.", "error")
+            return render_template("login.html")
+        
+        # Query for user record by username
+        user_record = User.query.filter_by(username=username).first()
+
+        # Check if username exists
+        if not user_record:
+            flash("Username does not exist.", "error")
+            # TODO: ADD OPTION OR BUTTON FOR THEM TO REGISTER EASILY
+            return render_template("login.html")
+
+        # Check if password is correct
+        if not check_password_hash(user_record.password, password):
+            flash("Password is incorrect.", "error")
+            return render_template("login.html")
+
+        # Login in user using flask_login feature
+        login_user(user_record)
+        flash("Login successful!", "success")
+        
+        return redirect(url_for("index"))
+    
+    else:
+        return render_template("login.html")
 
 
 # LOG OUT
