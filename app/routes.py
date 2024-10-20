@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Third-party imports
 from flask import render_template, request, redirect, flash, url_for
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # Local app imports
@@ -137,11 +137,10 @@ def login():
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     """
-    Log in an existing user. 
-    - Ensure username exists and password is correct.
+    Log out the user. 
     """
-
-    return "log out"
+    logout_user()
+    return redirect(url_for('login'))
 
 
 # RESTAURANT RECORD
