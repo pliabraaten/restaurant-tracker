@@ -24,6 +24,9 @@ login_manager.login_view = 'login'
 def load_user(user_id):  # Loads user_id of currently logged-in user
         return User.query.get(int(user_id))  # DB lookup of the user with the user_id from current session
 
-
 # Import routes after Flask app is created
 from app import routes, models
+
+# Create db tables
+with app.app_context():
+    db.create_all()

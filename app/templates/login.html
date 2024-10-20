@@ -1,10 +1,10 @@
-{% extends "layout.html"}
+{% extends "layout.html" %}
 
 {% block title %}
     User Login
 {% endblock %}
 
-{% block main %}
+{% block content %}
     <form action="/login" method="post">
         <div>
             <input autocomplete="off" autofocus name="username" placeholder="Username" type="text">

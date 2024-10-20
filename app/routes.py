@@ -3,8 +3,8 @@
 from datetime import datetime  
 
 # Third-party imports
-from flask import render_template, request, redirect, flash
-from flask_login import login_required
+from flask import render_template, request, redirect, flash, url_for
+from flask_login import login_required, login_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # Local app imports
@@ -32,22 +32,60 @@ def register():
     - Ensures username is unique.
     - Requires password confirmation.
     - Hashes the password before saving.
-
-    - On GET: render the register html
-    - On POST: 
     """
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        name = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirmation = request.form.get('confirmation')
         
-        # TODO: CHECK IF USERNAME IS UNIQUE
-        # TODO: VERIFY PASSWORD CONFIRMATION MATCHES
-        # IFS
-            # Hash the password before adding to the db
-            # run flash message for success
+        # Check if name, username, and password fields were entered
+        # url_for function looks to the url for def register() instead of any hard coded /route
+        if not name: 
+            flash("Please enter name.", "error")
+            return redirect(url_for("register"))
+        if not username:
+            flash("Please enter username.", "error")
+            return redirect(url_for("register"))   
+        if not password or not confirmation:
+            flash("Please enter password twice.", "error")
+            return redirect(url_for("register")) 
+        
+        # Check if password confirmation matches
+        if password != confirmation:
+            flash("Passwords must match.", "error")
+            return redirect(url_for("register")) 
 
+        # Check if username already exists in db
+        username_exists = User.query.filter_by(username=username).first()  # first() retrieves first results or None
+        # If username already exists
+        if username_exists:
+            flash("Username already exists. Please log in or try different username", "error")
+            return redirect(url_for("register"))
+            # TODO: ADD EASY BUTTON TO LINK TO LOGIN PAGE
 
-    return render_template('register.html')
+        # Hash the password
+        hashed_password = generate_password_hash(password)
+        # Add user to people table in db
+        new_person = People(name=name)
+        db.session.add(new_person)
+        db.session.commit()  # Get new person id
+        # Add user to user table in db linking to the new record in people table
+        new_user = User(username=username, password=hashed_password, person_id=new_person.id) 
+        db.session.add(new_user)
+        db.session.commit()
+        
+        # Flash message for success in registering
+        flash("Success! You can now log in!", "success")
+
+        # Log user in
+        login_user(new_user)
+
+        return render_template(url_for('index'))
+
+    # Method == GET
+    else: 
+        return render_template('register.html')
 
 
 # LOG IN
@@ -58,7 +96,7 @@ def login():
     - Ensure username exists and password is correct.
     """
 
-    return "log in"
+    return render_template("login.html")
 
 
 # LOG OUT
@@ -69,7 +107,7 @@ def logout():
     - Ensure username exists and password is correct.
     """
 
-    return "log in"
+    return "log out"
 
 
 # RESTAURANT RECORD
@@ -100,7 +138,7 @@ def add_rest():
     - Customizable tags
     """
 
-    return redirect("/")
+    return redirect("/index")
 
 
 # MEAL RECORD
@@ -184,4 +222,4 @@ def about():
 def index():
     """Show home page"""
 
-    return "home page"
+    return render_template("index.html")
