@@ -11,8 +11,9 @@ class Config:
     
     # Sets URI (Uniform Resource Identifier) to the sqlite db if the DATABASE_URL environment is not set
     # TODO: FOR PRODUCTION, SET DATABASE_URL ENVIRONMENT VARIABLE
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///instance/restaurants.db'
-    
+    # Absolute path to find or create the db file
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance', 'restaurants.db')
+
     # Disables feature signaling every change in the db
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
