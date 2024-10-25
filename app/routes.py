@@ -171,6 +171,11 @@ def add_rest():
     - Customizable tags
     """
 
+    # TODO: VERIFY ALL INPUTS FROM THE FORM
+        # CHECK RESTAURANT DOESN'T ALREADY EXIST
+        # ADD RESTAURANT TO DB
+        # SEND USER TO RESTAURANT RECORD HTML
+
     return redirect("/index")
 
 
@@ -249,10 +254,14 @@ def about():
 
     return "about"
 
-# HOME PAGE
+# IDEX PAGE
 @app.route("/")
 @login_required
 def index():
     """Show home page"""
+    if request.method=="POST":
+        # If the add restaurant button is clicked
+        if request.form.get("action")=="add_rest":
+
 
     return render_template("index.html")

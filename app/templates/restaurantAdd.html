@@ -1,17 +1,43 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    User Login
+    Add Restaurant
 {% endblock %}
 
 {% block content %}
-    <form action="/login" method="post">
+    <h2>Add a new restaurant</h2>
+
+    <form action="/add_rest" method="post">
         <div>
-            <input autocomplete="off" autofocus name="username" placeholder="Username" type="text">
+            <input autofocus name="restaurant_name" placeholder="Restaurant Name" type="text">
+            <input name="address" placeholder="Address" type="text">
+            <input name="phone" placeholder="Phone Number" type="text">
+            <select class="form-select" name="cuisine">
+                <option selected>Cuisine</option>
+                <option value="American"></option>
+                <option value="Chinese"></option>
+                <option value="Cuban"></option>
+                <option value="Greek"></option>
+                <option value="Indian"></option>
+                <option value="Italian"></option>
+                <option value="Japanese"></option>
+                <option value="Korean"></option>
+                <option value="Mexican"></option>                
+                <option value="Thai"></option>
+                <option value="Vietnamese"></option>
+                <option value="Other"></option>       
+            </select>
+            <input class="for-check-input" type="radio" name="rating" id="1star">
+            <label clas="form-check-label" for="1star">1 Star</label>
+            <input class="for-check-input" type="radio" name="rating" id="2stars">
+            <label clas="form-check-label" for="2stars">2 Stars</label>
+            <input class="for-check-input" type="radio" name="rating" id="3stars">
+            <label clas="form-check-label" for="3stars">3 Stars</label>
+            <input class="for-check-input" type="radio" name="rating" id="4stars">
+            <label clas="form-check-label" for="4stars">4 Stars</label>
+            <input class="for-check-input" type="radio" name="rating" id="5stars">
+            <label clas="form-check-label" for="5stars">5 Stars</label>
         </div>
-        <div>
-            <input name="password" placeholder="Password" type="password">
-        </div>
-        <button type="submit">Log in</button>
+        <button type="submit">Add</button>
     </form>
 {% endblock %}
