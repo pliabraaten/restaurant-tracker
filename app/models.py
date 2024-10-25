@@ -40,6 +40,8 @@ class Restaurant(db.Model):
     # Establish many to one relationship with Meal
     meals = relationship('Meal', back_populates='restaurant')
 
+    # TODO: ADD TAGS TABLE TO HOLD TAGS TO RESTAURANTS MANY TO ONE
+
 # Meal Table
 class Meal(db.Model):
     __tablename__ = 'meals'
