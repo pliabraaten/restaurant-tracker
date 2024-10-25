@@ -1,0 +1,19 @@
+
+
+# sqlite 
+
+# turn on headers
+.headers on
+
+# use columns
+.mode column
+
+# table structure
+.mode box
+
+# set fixed widths for columns
+.width 20
+
+# print in lines instead of table
+.mode lines
+
