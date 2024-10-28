@@ -152,7 +152,34 @@ def restaurant():
     - Option to delete.
     """
 
-    return "restaurant"
+    if request.method == "POST":
+        # IF CLICK THE DELETE BUTTON, THEN DELETE RESTAURANT RECORD
+        if request.form.get("action") == "delete_meal":
+            # TODO: VERIFY THAT USER WANTS TO DELETE
+            restaurant_record = Restaurant.query.filter_by(id = #TODO: ID FROM THE RESTAURANT RECORD SELETED)
+            db.session.delete(restaurant_record)
+            db.session.commit()
+
+            # Redirect user back to home page
+            return redirect(url_for("index"))
+
+        # If user clicks Add Meal, then send them to mealAdd.html
+        if request.form.get("action") == "add_meal":
+
+            return render_template("mealAdd.html", rest_id = # TODO: ID OF SELECTED RESTAURANT)
+
+    else:
+        
+        # TODO: GET ID FROM THE RESTAURANT RECORD OF THE REST SELECT
+        # LOOKUP ALL THE DATA FIELD VALUES ASSOCIATED WITH THAT RECORD
+
+        # TODO: QUERY ALL MEALS FOR THIS RESTAURANT IN A DICT??
+
+        # PASS RESTAURANT AND MEAL DATA FIELD VALUES INTO THE HTML WITH THE RENDER_TEMPLATE
+
+        # Pass in values into template (use jinja template)
+        return render_template("restaurant.html", name=)
+        
 
 
 # ADD NEW RESTAURANT
@@ -171,12 +198,56 @@ def add_rest():
     - Customizable tags
     """
 
-    # TODO: VERIFY ALL INPUTS FROM THE FORM
-        # CHECK RESTAURANT DOESN'T ALREADY EXIST
-        # ADD RESTAURANT TO DB
-        # SEND USER TO RESTAURANT RECORD HTML
+    # TODO 1ST: READ THROUGH CODE ON THIS ROUTE AND CHECK
+    # TODO 2ND: GET RESTAURANTADD.HTML TO RENDER
+    if request.method == "POST":
+        # Capture name of new restaurant
+        restaurant = request.form.get("restaurant_name")
+        address = request.form.get("address")
+        phone = request.form.get("phone")
+        cuisine = request.form.get("cuisine")
+        # rating = TODO: ADD RATING VALUE
 
-    return redirect("/index")
+        # Verify restaurant name was entered
+        if not restaurant:
+            flash("Please enter name of restaurant", "error")
+            return render_template("restaurantAdd.html")
+        # ADDRESS AND PHONE NUMBER OPTIONAL
+        # Ensure phone number is string between 11 and 14 chars
+        if len(phone) < 11 or len(phone) > 14:
+            flash("Please enter a valid phone number.", "error")
+            return render_template("restaurantAdd.html")
+        # Ensure cuisine is selected
+        if not cuisine:
+            flash("Please select cuisne type for restaurant.", "error")
+            return render_template("restaurantAdd.html")
+        
+        # TODO: ENSURE A RATING RADIO BUTTON IS SELECT
+
+        # Check if restaurant name is already in db
+        restaurant_exists = Restaurant.query.filter_by(name=restaurant).first()
+        if not restaurant_exists:
+            flash("Restaurant already exists.", "error")
+            return render_template("restaurantAdd.html")
+        # TODO: ADD BUTTON THAT REDIRECTS TO THE RESTAURANT RECORD
+
+        # ADD RESTAURANT TO DB
+        new_restaurant = Restaurant(name=restaurant, address=address, phone_number=phone, cuisine=cuisine)
+        # TODO: ADD RATING TO ^ FOR THE RATION VALUE
+        # TODO: ADD DATE = GET.DATE FUNCTION FOR ^
+            # OR REMOVE DATE FROM RESTAURANT AND ONLY HAVE IT FOR MEAL RECORDS
+
+        db.session.add(new_restaurant)
+        db.session.commit()
+        
+        # Flash message for success in registering
+        flash("Success! You added a new restaurant!", "success")
+
+        # SEND USER TO RESTAURANT RECORD HTML
+        return render_template("restaurant.html") # TODO: PASS IN RESTAURANT ID TO LOAD THE CORRECT RESTAURANT RECORD
+
+    else:
+        return render_template("restaurantAdd.html")
 
 
 # MEAL RECORD
@@ -188,7 +259,25 @@ def meal():
     - Option to delete.
     """
 
-    return "meal"
+    if request.method == "POST":
+        # IF CLICK THE DELETE BUTTON, THEN DELETE meal RECORD
+        # TODO: VERIFY THAT USER WANTS TO DELETE
+        meal_record = Meal.query.filter_by(id = #TODO: ID FROM THE meal RECORD SELETED)
+        db.session.delete(meal_record)
+        db.session.commit()
+
+        # Go back to the restaurant record
+        return render_template("restaurant.html", id = #ID OF SELECTED RESTAURANT)
+
+    else:
+        
+        # TODO: GET ID FROM THE meal RECORD OF THE REST SELECT
+        # LOOKUP ALL THE DATA FIELD VALUES ASSOCIATED WITH THAT RECORD
+        # PASS THOSE DATA FIELD VALUES INTO THE HTML WITH THE RENDER_TEMPLATE
+
+        # Pass in values into template (use jinja template)
+        return render_template("meal.html", name=)
+    
 
 
 # ADD NEW MEAL
@@ -205,7 +294,50 @@ def add_meal():
     - Notes
     """
 
-    return redirect("/restaurant") # Go back to restaurant page
+# TODO: HOW DO I TIE THIS MEAL RECORD TO A RESTAURANT RECORD
+            # THIS ROUTE IS DIRECTED ONLY FROM THE RESTAURANT RECORD RESTAURANT.HTML
+            # CAN I SAVE THE RESTAURANT ID AS A SESSION VARIABLE? 
+    restaurant_id = # ^^ 
+
+    if request.method.get("POST"):
+        # Capture input from forms
+        meal = request.form.get("meal_name")
+        price = request.form.get("price")
+        #rating TODO: ADD ABILITY TO OBTAIN RATING FROM SELECTION DROPLIST
+        notes = request.form.get("notes")
+        person = request.form.get("person")
+    
+        # Verify requirement fields were entered
+        if not meal: 
+            flash("Please enter a name for the meal.", "error")
+            return render_template("mealAdd.html")
+        
+        if not price or price <= 0: # TODO: or price is not a float
+            flash("Please enter a valid price for the meal", "error")
+            return render_template("mealAdd.html")
+
+        # TODO: ADD VERFIFICATION FOR RATING SELECTION
+
+        # Check if the restaurant already has this meal record existing
+        meal_exists = Meal.query.filter_by(name=meal, rest_id=restaurant_id).first()  
+        if not meal_exists:
+            flash("This meal already exists for this restaurant", "error")
+            render_template("mealAdd.html")
+
+        # Add the meal record to the db
+        new_meal = Meal(name=meal, price=price, rating=rating, person_id=person, notes=notes, rest_id_restaurant_id)
+
+        db.session.add(new_meal)
+        db.session.commit()
+
+        # Flash message for success in registering
+        flash("Success! You added a new meal!", "success")
+
+        # SEND USER TO RESTAURANT RECORD HTML
+        return render_template("restaurant.html") # TODO: PASS IN RESTAURANT ID TO LOAD THE CORRECT RESTAURANT RECORD
+
+    else: 
+        return render_template("mealAdd.html")
 
 
 # SEARCH FOR A RESTAURANT
@@ -259,9 +391,10 @@ def about():
 @login_required
 def index():
     """Show home page"""
-    if request.method=="POST":
+    if request.method == "POST":
         # If the add restaurant button is clicked
-        if request.form.get("action")=="add_rest":
+        if request.form.get("action") == "add_rest":
+            return redirect("/add_rest")
 
-
-    return render_template("index.html")
+    else:
+        return render_template("index.html")

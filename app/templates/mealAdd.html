@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Meal
+{% endblock %}
+
+{% block content %}
+    <h2>Add a new meal</h2>
+        <div>
+            <input autofocus name="meal_name" placeholder="Meal Name" type="text">
+            <input name="price" placeholder="price" type="float">
+            <select class="form-select" name="rating">
+                <option selected>Rating</option>
+                <option value="Favorite"></option>
+                <option value="Good"></option>
+                <option value="Try Again"></option>
+                <option value="Pass"></option>   
+            <!-- TODO: ADD OPTION TO SEARCH AND ADD PERSON TO GOT THIS DISH 
+                    name="person" -->
+            <!-- TODO: CHANGE FORMAT TO LONG STRING -->
+            <input name="notes" placeholder="Notes" type="text">
+        </div>
+        <button type="submit">Add</button>
+    </form>
+{% endblock %}
