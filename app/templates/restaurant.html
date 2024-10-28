@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Restaurant Record
+{% endblock %}
+
+{% block content %}
+    <h2>Restaurant</h2>
+
+    <table>
+        <thead>
+            <th>Restaurant</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Cuisine</th>
+            <th>Rating</th>
+            <th>Tags</th>
+        </thead>
+    <tbody>
+        <tr>
+            <td>{{  name  }}</td>
+            <td>{{  address  }}</td>
+            <td>{{  phone  }}</td>
+            <td>{{  cuisine  }}</td>
+            <td>{{  rating  }}</td>
+            <td>{{  tags  }}</td>
+        </tr>
+    </tbody>
+    <!-- Display meals for this restaurant -->
+    <table>
+        <thead>
+            <th>Meal</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Person</th>
+            <th>Notes</th>
+        </thead>
+    <tbody>
+        {% for row in meals %}
+        <tr>
+            <td>{{  name  }}</td>
+            <td>{{  price  }}</td>
+            <td>{{  rating  }}</td>
+            <td>{{  person  }}</td>
+            <td>{{  notes  }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+    <!-- TODO: CHECK IF THE TYPE SHOULD BE SUBMIT ON THESE -->
+    <form action="/restaurant" method="post">
+        <button type="submit" name="action" value="add_meal">Add</button>
+    </form>
+    <form action="/restaurant" method="post">
+        <button type="submit" name="action" value="delete_meal">Delete</button>
+    </form>
+{% endblock %}

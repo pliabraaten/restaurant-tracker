@@ -47,7 +47,7 @@ class Meal(db.Model):
     __tablename__ = 'meals'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    price = Column(Integer)
+    price = Column(float)
     rating = Column(String)
     person_id = Column(Integer, ForeignKey('people.id'), nullable=False)
     notes = Column(String)  # Max 255 if need more - use TEXT datatype
