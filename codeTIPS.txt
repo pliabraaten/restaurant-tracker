@@ -1,4 +1,10 @@
 
+# access dev server
+python run.py
+
+# webpage including offline
+http://127.0.0.1:5000
+
 
 # sqlite 
 
