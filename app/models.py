@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
@@ -33,21 +33,19 @@ class Restaurant(db.Model):
     name = Column(String, unique=True, nullable=False)
     address = Column(String)
     phone_number = Column(String(15))
-    date = Column(Date)
     cuisine = Column(String)
     rating = Column(Integer)
-    tags = Column(String)
-    # Establish many to one relationship with Meal
+    # Establish many to one relationship with Meal and Tag
     meals = relationship('Meal', back_populates='restaurant')
-
-    # TODO: ADD TAGS TABLE TO HOLD TAGS TO RESTAURANTS MANY TO ONE
+    tags = relationship('Tag', back_populates='restaurant')
 
 # Meal Table
 class Meal(db.Model):
     __tablename__ = 'meals'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    price = Column(float)
+    date = Column(Date, nullable=False)
+    price = Column(Float)
     rating = Column(String)
     person_id = Column(Integer, ForeignKey('people.id'), nullable=False)
     notes = Column(String)  # Max 255 if need more - use TEXT datatype
@@ -58,3 +56,11 @@ class Meal(db.Model):
 
     # TODO: ADD PHOTO/IMAGE ATTACHMENT - HOW DOES THAT SAVE IN A DB? 
 
+# Tags Table
+class Tag(db.Model):
+    __tablename__ = 'tags'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    rest_id = Column(Integer, ForeignKey('restaurants.id'), nullable=False)
+    # Establish relationship with Restaurant
+    restaurant = relationship('Restaurant', back_populates='tags')

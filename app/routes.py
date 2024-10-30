@@ -143,20 +143,23 @@ def logout():
     return redirect(url_for('login'))
 
 
-# RESTAURANT RECORD
-@app.route("/restaurant", methods=["GET", "POST"])
+# RESTAURANT RECORD 
+    # Track the id of selected restaurant in the URL
+@app.route("/restaurant/<int:restaurant_id>", methods=["GET", "POST"])
 @login_required
-def restaurant():
+def restaurant(restaurant_id):
     """
     Display restaurant records.
     - Option to delete.
     """
 
     if request.method == "POST":
-        # IF CLICK THE DELETE BUTTON, THEN DELETE RESTAURANT RECORD
-        if request.form.get("action") == "delete_meal":
+
+        # Get the restaurant record based on id
+        restaurant_record = Restaurant.query.get(restaurant_id)
+
+        if request.form.get("action") == "delete_rest":
             # TODO: VERIFY THAT USER WANTS TO DELETE
-            restaurant_record = Restaurant.query.filter_by(id = #TODO: ID FROM THE RESTAURANT RECORD SELETED)
             db.session.delete(restaurant_record)
             db.session.commit()
 
@@ -166,7 +169,7 @@ def restaurant():
         # If user clicks Add Meal, then send them to mealAdd.html
         if request.form.get("action") == "add_meal":
 
-            return render_template("mealAdd.html", rest_id = # TODO: ID OF SELECTED RESTAURANT)
+            return render_template("mealAdd.html", restaurant_id=restaurant_id)
 
     else:
         
@@ -178,7 +181,7 @@ def restaurant():
         # PASS RESTAURANT AND MEAL DATA FIELD VALUES INTO THE HTML WITH THE RENDER_TEMPLATE
 
         # Pass in values into template (use jinja template)
-        return render_template("restaurant.html", name=)
+        return render_template("restaurant.html", restaurant_id=restaurant_id)
         
 
 
@@ -198,44 +201,43 @@ def add_rest():
     - Customizable tags
     """
 
-    # TODO 1ST: READ THROUGH CODE ON THIS ROUTE AND CHECK
-    # TODO 2ND: GET RESTAURANTADD.HTML TO RENDER
     if request.method == "POST":
         # Capture name of new restaurant
         restaurant = request.form.get("restaurant_name")
         address = request.form.get("address")
         phone = request.form.get("phone")
         cuisine = request.form.get("cuisine")
-        # rating = TODO: ADD RATING VALUE
+        rating = request.form.get("rating")
 
         # Verify restaurant name was entered
         if not restaurant:
             flash("Please enter name of restaurant", "error")
             return render_template("restaurantAdd.html")
-        # ADDRESS AND PHONE NUMBER OPTIONAL
-        # Ensure phone number is string between 11 and 14 chars
-        if len(phone) < 11 or len(phone) > 14:
-            flash("Please enter a valid phone number.", "error")
+        
+        # Check if restaurant name is already in db
+        restaurant_exists = Restaurant.query.filter_by(name=restaurant).first()
+        if restaurant_exists:
+            flash("Restaurant already exists.", "error")
             return render_template("restaurantAdd.html")
+        # TODO: ADD BUTTON THAT REDIRECTS TO THE RESTAURANT RECORD
+        
+        # Phone number is optional, but if entered, ensure phone number is string between 11 and 14 chars
+        if phone:
+            if len(phone) < 11 or len(phone) > 14:
+                flash("Please enter a valid phone number.", "error")
+                return render_template("restaurantAdd.html")
+        # Address is optional
         # Ensure cuisine is selected
         if not cuisine:
             flash("Please select cuisne type for restaurant.", "error")
             return render_template("restaurantAdd.html")
-        
-        # TODO: ENSURE A RATING RADIO BUTTON IS SELECT
-
-        # Check if restaurant name is already in db
-        restaurant_exists = Restaurant.query.filter_by(name=restaurant).first()
-        if not restaurant_exists:
-            flash("Restaurant already exists.", "error")
+        # Ensure rating radio button is selected
+        if not rating: 
+            flash("Please select a rating for this restaurant", "error")
             return render_template("restaurantAdd.html")
-        # TODO: ADD BUTTON THAT REDIRECTS TO THE RESTAURANT RECORD
 
         # ADD RESTAURANT TO DB
-        new_restaurant = Restaurant(name=restaurant, address=address, phone_number=phone, cuisine=cuisine)
-        # TODO: ADD RATING TO ^ FOR THE RATION VALUE
-        # TODO: ADD DATE = GET.DATE FUNCTION FOR ^
-            # OR REMOVE DATE FROM RESTAURANT AND ONLY HAVE IT FOR MEAL RECORDS
+        new_restaurant = Restaurant(name=restaurant, address=address, phone_number=phone, cuisine=cuisine, rating=rating)
 
         db.session.add(new_restaurant)
         db.session.commit()
@@ -243,47 +245,50 @@ def add_rest():
         # Flash message for success in registering
         flash("Success! You added a new restaurant!", "success")
 
-        # SEND USER TO RESTAURANT RECORD HTML
-        return render_template("restaurant.html") # TODO: PASS IN RESTAURANT ID TO LOAD THE CORRECT RESTAURANT RECORD
+        # Get id of newly created restaurant record
+        restaurant_id = new_restaurant.id
+
+        # SEND USER TO RESTAURANT HTML OF THE NEWLY CREATED RECORD
+        return redirect(url_for('restaurant', restaurant_id=restaurant_id))
 
     else:
         return render_template("restaurantAdd.html")
 
 
 # MEAL RECORD
-@app.route("/meal", methods=["GET", "POST"])
+@app.route("/meal/<int:restaurant_id>", methods=["GET", "POST"])
 @login_required
-def meal():
+def meal(restaurant_id):
     """
     Display meal record.
     - Option to delete.
     """
+    return "meal"
+    # if request.method == "POST":
+    #     # IF CLICK THE DELETE BUTTON, THEN DELETE meal RECORD
+    #     # TODO: VERIFY THAT USER WANTS TO DELETE
+    #     meal_record = Meal.query.filter_by(id = #TODO: ID FROM THE meal RECORD SELETED)
+    #     db.session.delete(meal_record)
+    #     db.session.commit()
 
-    if request.method == "POST":
-        # IF CLICK THE DELETE BUTTON, THEN DELETE meal RECORD
-        # TODO: VERIFY THAT USER WANTS TO DELETE
-        meal_record = Meal.query.filter_by(id = #TODO: ID FROM THE meal RECORD SELETED)
-        db.session.delete(meal_record)
-        db.session.commit()
+    #     # Go back to the restaurant record
+    #     return render_template("restaurant.html", restaurant_id=restaurant_id)
 
-        # Go back to the restaurant record
-        return render_template("restaurant.html", id = #ID OF SELECTED RESTAURANT)
-
-    else:
+    # else:
         
-        # TODO: GET ID FROM THE meal RECORD OF THE REST SELECT
-        # LOOKUP ALL THE DATA FIELD VALUES ASSOCIATED WITH THAT RECORD
-        # PASS THOSE DATA FIELD VALUES INTO THE HTML WITH THE RENDER_TEMPLATE
+    #     # TODO: GET ID FROM THE meal RECORD OF THE REST SELECT
+    #     # LOOKUP ALL THE DATA FIELD VALUES ASSOCIATED WITH THAT RECORD
+    #     # PASS THOSE DATA FIELD VALUES INTO THE HTML WITH THE RENDER_TEMPLATE
 
-        # Pass in values into template (use jinja template)
-        return render_template("meal.html", name=)
+    #     # Pass in values into template (use jinja template)
+    #     return render_template("meal.html", name=)
     
 
 
 # ADD NEW MEAL
-@app.route("/add_meal", methods=["GET", "POST"])
+@app.route("/add_meal/<int:restaurant_id>", methods=["GET", "POST"])
 @login_required
-def add_meal():
+def add_meal(restaurant_id):
     """
     Create a new meal record to an existing restaurant. 
     - Menu item name
@@ -293,51 +298,53 @@ def add_meal():
     - Friends present
     - Notes
     """
+    return "add meal"
+# # TODO: HOW DO I TIE THIS MEAL RECORD TO A RESTAURANT RECORD
+#             # THIS ROUTE IS DIRECTED ONLY FROM THE RESTAURANT RECORD RESTAURANT.HTML
+#             # CAN I SAVE THE RESTAURANT ID AS A SESSION VARIABLE? 
+#     restaurant_id = # ^^ 
 
-# TODO: HOW DO I TIE THIS MEAL RECORD TO A RESTAURANT RECORD
-            # THIS ROUTE IS DIRECTED ONLY FROM THE RESTAURANT RECORD RESTAURANT.HTML
-            # CAN I SAVE THE RESTAURANT ID AS A SESSION VARIABLE? 
-    restaurant_id = # ^^ 
-
-    if request.method.get("POST"):
-        # Capture input from forms
-        meal = request.form.get("meal_name")
-        price = request.form.get("price")
-        #rating TODO: ADD ABILITY TO OBTAIN RATING FROM SELECTION DROPLIST
-        notes = request.form.get("notes")
-        person = request.form.get("person")
+#     if request.method.get("POST"):
+#         # Capture input from forms
+#         meal = request.form.get("meal_name")
+#         price = request.form.get("price")
+#         #rating TODO: ADD ABILITY TO OBTAIN RATING FROM SELECTION DROPLIST
+#         notes = request.form.get("notes")
+#         person = request.form.get("person")
     
-        # Verify requirement fields were entered
-        if not meal: 
-            flash("Please enter a name for the meal.", "error")
-            return render_template("mealAdd.html")
+#         # Verify requirement fields were entered
+#         if not meal: 
+#             flash("Please enter a name for the meal.", "error")
+#             return render_template("mealAdd.html")
         
-        if not price or price <= 0: # TODO: or price is not a float
-            flash("Please enter a valid price for the meal", "error")
-            return render_template("mealAdd.html")
+#         if not price or price <= 0: # TODO: or price is not a float
+#             flash("Please enter a valid price for the meal", "error")
+#             return render_template("mealAdd.html")
 
-        # TODO: ADD VERFIFICATION FOR RATING SELECTION
+#         # TODO: ADD VERFIFICATION FOR RATING SELECTION
 
-        # Check if the restaurant already has this meal record existing
-        meal_exists = Meal.query.filter_by(name=meal, rest_id=restaurant_id).first()  
-        if not meal_exists:
-            flash("This meal already exists for this restaurant", "error")
-            render_template("mealAdd.html")
+#         # Check if the restaurant already has this meal record existing
+#         meal_exists = Meal.query.filter_by(name=meal, rest_id=restaurant_id).first()  
+#         if meal_exists:
+#             flash("This meal already exists for this restaurant", "error")
+#             render_template("mealAdd.html")
 
-        # Add the meal record to the db
-        new_meal = Meal(name=meal, price=price, rating=rating, person_id=person, notes=notes, rest_id_restaurant_id)
+#         # TODO: SET DATE EQUAL TO CURRENT DATE
 
-        db.session.add(new_meal)
-        db.session.commit()
+#         # Add the meal record to the db
+#         new_meal = Meal(name=meal, price=price, rating=rating, person_id=person, notes=notes, rest_id=restaurant_id)
 
-        # Flash message for success in registering
-        flash("Success! You added a new meal!", "success")
+#         db.session.add(new_meal)
+#         db.session.commit()
 
-        # SEND USER TO RESTAURANT RECORD HTML
-        return render_template("restaurant.html") # TODO: PASS IN RESTAURANT ID TO LOAD THE CORRECT RESTAURANT RECORD
+#         # Flash message for success in registering
+#         flash("Success! You added a new meal!", "success")
 
-    else: 
-        return render_template("mealAdd.html")
+#         # SEND USER TO RESTAURANT RECORD HTML
+#         return redirect(url_for('restaurant', restaurant_id=restaurant_id) # TODO: PASS IN RESTAURANT ID TO LOAD THE CORRECT RESTAURANT RECORD
+
+#     else: 
+#         return render_template("mealAdd.html")
 
 
 # SEARCH FOR A RESTAURANT
