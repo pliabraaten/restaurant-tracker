@@ -171,18 +171,25 @@ def restaurant(restaurant_id):
 
             return render_template("mealAdd.html", restaurant_id=restaurant_id)
 
-    else:
+    else: # If GET method, just load the page with the restaurant data
         
-        # TODO: GET ID FROM THE RESTAURANT RECORD OF THE REST SELECT
-        # LOOKUP ALL THE DATA FIELD VALUES ASSOCIATED WITH THAT RECORD
+        # Query the restaurant using the restaurant_id value that was passed in
+        restaurant = Restaurant.query.get(restaurant_id)
+
 
         # TODO: QUERY ALL MEALS FOR THIS RESTAURANT IN A DICT??
 
         # PASS RESTAURANT AND MEAL DATA FIELD VALUES INTO THE HTML WITH THE RENDER_TEMPLATE
 
         # Pass in values into template (use jinja template)
-        return render_template("restaurant.html", restaurant_id=restaurant_id)
-        
+        # TODO: ADD TAGS TO THIS RENDERING
+        return render_template("restaurant.html", 
+                                name=restaurant.name,
+                                address=restaurant.address,
+                                phone=restaurant.phone_number,
+                                cuisine=restaurant.cuisine,
+                                rating=restaurant.rating)
+       
 
 
 # ADD NEW RESTAURANT
@@ -324,7 +331,7 @@ def add_meal(restaurant_id):
 #         # TODO: ADD VERFIFICATION FOR RATING SELECTION
 
 #         # Check if the restaurant already has this meal record existing
-#         meal_exists = Meal.query.filter_by(name=meal, rest_id=restaurant_id).first()  
+#         meal_exists = Meal.query.filter_by(name=meal, restaurant_id=restaurant_id).first()  
 #         if meal_exists:
 #             flash("This meal already exists for this restaurant", "error")
 #             render_template("mealAdd.html")
@@ -332,7 +339,7 @@ def add_meal(restaurant_id):
 #         # TODO: SET DATE EQUAL TO CURRENT DATE
 
 #         # Add the meal record to the db
-#         new_meal = Meal(name=meal, price=price, rating=rating, person_id=person, notes=notes, rest_id=restaurant_id)
+#         new_meal = Meal(name=meal, price=price, rating=rating, person_id=person, notes=notes, restaurant_id=restaurant_id)
 
 #         db.session.add(new_meal)
 #         db.session.commit()

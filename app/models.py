@@ -49,7 +49,7 @@ class Meal(db.Model):
     rating = Column(String)
     person_id = Column(Integer, ForeignKey('people.id'), nullable=False)
     notes = Column(String)  # Max 255 if need more - use TEXT datatype
-    rest_id = Column(Integer, ForeignKey('restaurants.id'), nullable=False)
+    restaurant_id = Column(Integer, ForeignKey('restaurants.id'), nullable=False)
     # Establish relationship with Restaurant and People
     restaurant = relationship('Restaurant', back_populates='meals')
     person = relationship('People', back_populates='meals')
@@ -61,6 +61,6 @@ class Tag(db.Model):
     __tablename__ = 'tags'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    rest_id = Column(Integer, ForeignKey('restaurants.id'), nullable=False)
+    restaurant_id = Column(Integer, ForeignKey('restaurants.id'), nullable=False)
     # Establish relationship with Restaurant
     restaurant = relationship('Restaurant', back_populates='tags')
