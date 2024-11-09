@@ -23,3 +23,26 @@ http://127.0.0.1:5000
 # print in lines instead of table
 .mode lines
 
+
+# HTML validate with https://validator.w3.org/
+type element + tab to auto close tag
+
+# CONTAINERS
+<header>	Container for introductory content
+<footer>	Container for content descriptive information about the webpage like author, copyright, or date modified
+<address>	Container for person's or organization's contact information
+<main>	Container for the document's primary content
+<section>	Container for distinct parts of a document, such as a chapter
+<article>	Container for self-contained content that can be reused independently, such as a news article
+<nav>	Container for content relating to website navigation
+<aside>	Container for content not directly related to the main topic of a document
+<div>	Generic element for creating block containers
+<span>	Generic element for creating inline containers
+
+# FORM
+The <input> element allows the user to enter information into a webpage. The <input> element is a void element with five primary attributes:
+type: attribute indicates the widget type. Common types include text, password, submit, and button.
+name: attribute names the widget and sends the widget's value when the widget's form is submitted -> identifier for python
+id: attribute is used to give a widget a unique identifier -> identifier for html and CSS
+placeholder: attribute specifies text that first appears in a text widget, typically for giving the user a hint as to the expected value.
+value: attribute specifies a default value for a widget.
