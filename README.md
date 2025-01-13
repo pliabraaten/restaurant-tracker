@@ -10,11 +10,11 @@ project_root/
 |   |-- models.py     # defines database models, db initialized in __init__.py
 ```
 
-Overview
+**Overview**
 
 The Restaurant Tracker is a web application built using Python, Flask, and SQLAlchemy. This app helps users keep track of their dining experiences by allowing them to add and manage restaurant records, associate meal records with specific restaurants, and search for restaurants based on various criteria. Users can also review past meals to decide where to eat next and what to order.
 
-
+-------------------------------------------------------------------------------------------------------------------
 1. **Account Management**
 
    **User Story**: As a user, I want to create an account and log in securely to manage my data.
