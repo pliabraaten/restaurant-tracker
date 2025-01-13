@@ -21,9 +21,9 @@ The Restaurant Tracker is a web application built using Python, Flask, and SQLAl
 
    **User Story**: As a user, I want to create an account and log in securely to manage my data.
 
-   **Tasks**:
-   [] Create routes for registering, logging in, and logging out.
-   [] Hash passwords for security.
+   **Tasks**: <br />
+   [] Create routes for registering, logging in, and logging out. <br />
+   [] Hash passwords for security. <br />
 
 2. **Adding Restaurants**
 
