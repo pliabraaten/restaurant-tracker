@@ -29,8 +29,8 @@ The Restaurant Tracker is a web application built using Python, Flask, and SQLAl
 
    **User Story**: As a user, I want to add restaurants with details like name, address, and cuisine to track where I’ve eaten.
 
-   **Tasks**:
-   [] Create a form to add restaurant details.
+   **Tasks**: <br />
+   [] Create a form to add restaurant details. <br />
    [] Prevent duplicate restaurant entries.
 
 3. **Adding Meals**
