@@ -22,46 +22,46 @@ The Restaurant Tracker is a web application built using Python, Flask, and SQLAl
    **User Story**: As a user, I want to create an account and log in securely to manage my data.
 
    **Tasks**:
-   - Create routes for registering, logging in, and logging out.
-   - Hash passwords for security.
+   [] Create routes for registering, logging in, and logging out.
+   [] Hash passwords for security.
 
 2. **Adding Restaurants**
 
    **User Story**: As a user, I want to add restaurants with details like name, address, and cuisine to track where I’ve eaten.
 
    **Tasks**:
-   - Create a form to add restaurant details.
-   - Prevent duplicate restaurant entries.
+   [] Create a form to add restaurant details.
+   [] Prevent duplicate restaurant entries.
 
 3. **Adding Meals**
 
    **User Story**: As a user, I want to add meals to restaurants with tags and ratings to remember my experiences.
 
    **Tasks**:
-   - Create a form to add meals to a restaurant.
-   - Link meals to specific restaurants.
+   [] Create a form to add meals to a restaurant.
+   [] Link meals to specific restaurants.
 
 4. **Searching for Restaurants**
 
    **User Story**: As a user, I want to search for restaurants by name, cuisine, or tags to decide where to eat.
 
    **Tasks**:
-   - Add a search form for restaurant filters.
-   - Use filters like name, cuisine, and rating.
+   [] Add a search form for restaurant filters.
+   [] Use filters like name, cuisine, and rating.
 
 5. **Viewing Details**
 
    **User Story**: As a user, I want to view restaurant and meal details to review past dining experiences.
 
    **Tasks**:
-   - Display restaurant information and its associated meals on one page.
+   [] Display restaurant information and its associated meals on one page.
 
 6. **Editing and Deleting**
 
    **User Story**: As a user, I want to edit or delete restaurants and meals to keep my data up to date.
 
    **Tasks**:
-   - Create routes and forms for editing and deleting records.
+   [] Create routes and forms for editing and deleting records.
 
 
 
