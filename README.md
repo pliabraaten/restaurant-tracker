@@ -23,7 +23,7 @@ The Restaurant Tracker is a web application built using Python, Flask, and SQLAl
 
    **Tasks**: <br />
    [] Create routes for registering, logging in, and logging out. <br />
-   [] Hash passwords for security. <br />
+   [] Hash passwords for security. 
 
 2. **Adding Restaurants**
 
@@ -37,30 +37,30 @@ The Restaurant Tracker is a web application built using Python, Flask, and SQLAl
 
    **User Story**: As a user, I want to add meals to restaurants with tags and ratings to remember my experiences.
 
-   **Tasks**:
-   [] Create a form to add meals to a restaurant.
+   **Tasks**: <br />
+   [] Create a form to add meals to a restaurant. <br />
    [] Link meals to specific restaurants.
 
 4. **Searching for Restaurants**
 
    **User Story**: As a user, I want to search for restaurants by name, cuisine, or tags to decide where to eat.
 
-   **Tasks**:
-   [] Add a search form for restaurant filters.
+   **Tasks**: <br />
+   [] Add a search form for restaurant filters. <br />
    [] Use filters like name, cuisine, and rating.
 
 5. **Viewing Details**
 
    **User Story**: As a user, I want to view restaurant and meal details to review past dining experiences.
 
-   **Tasks**:
+   **Tasks**: <br />
    [] Display restaurant information and its associated meals on one page.
 
 6. **Editing and Deleting**
 
-   **User Story**: As a user, I want to edit or delete restaurants and meals to keep my data up to date.
+   **User Story**: As a user, I want to edit or delete restaurants and meals to keep my data current.
 
-   **Tasks**:
+   **Tasks**: <br />
    [] Create routes and forms for editing and deleting records.
 
 
